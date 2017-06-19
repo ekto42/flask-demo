@@ -6,7 +6,6 @@ import quandl as qd
 import pandas as pd
 import requests
 
-
 from bokeh.plotting import figure
 from bokeh.embed import components
 
