@@ -1,8 +1,46 @@
 from flask import Flask, render_template, request, redirect
 
+import datetime
+
+import quandl as qd
+import pandas as pd
+import requests
+
+
+from bokeh.plotting import figure
+from bokeh.embed import components
+
 app = Flask(__name__)
 
-app.vars={}
+
+today = datetime.date.today()
+start_date = today - datetime.timedelta(days = 90)
+
+api_key = 'bB5qXVs1HejzVsWA8bJx'
+
+def request_data(ticker):
+    df = qd.get('WIKI/%s' % ticker, trim_start = start_date, trim_end = today)
+    df = df[['Open','Close','Adj. Open','Adj. Close']].reset_index()
+    return df
+    #search_url = "https://www.quandl.com/api/v3/datasets/WIKI/%s/data.json?api_key=%s&start_date=%s&end_date=%s"%(ticker,api_key,start_date,today)
+    
+def create_figure(ticker):
+    df = request_data(ticker)
+    x = df['Date']
+    y = df['Open']
+
+    p = figure(x_axis_type="datetime", title="%s Closing Prices" % ticker)
+    p.grid.grid_line_alpha = 0
+    p.xaxis.axis_label = 'Date'
+    p.yaxis.axis_label = '%s Price' % ticker
+    p.ygrid.band_fill_color = "green"
+    p.ygrid.band_fill_alpha = 0.1
+
+    p.circle(x, y, size = 4, legend = ticker, color = 'darkgrey', alpha = 0.2)
+
+    p.legend.location = "top_left"
+    return p
+
 
 @app.route('/')
 def main():
@@ -14,15 +52,20 @@ def index():
 
 @app.route('/plot', methods=['POST'])
 def plot():
-    app.vars['ticker'] = request.form['ticker']
-    # app.vars['closing_price'] = request.form['closing_price']
-    # app.vars['adj_closing_price'] = request.form['adj_closing_price']
-    # app.vars['opening_price'] = request.form['opening_price']
-    # app.vars['adj_opening_price'] = request.form['adj_opening_price']
-    
+    ticker = request.form['ticker']
+    #price = request.form['price']
 
 
-    return render_template('plot.html', ticker = app.vars['ticker']) 
+    #return str(ticker)
+
+    plot = create_figure(ticker)
+
+    if plot is None:
+        return 'Plot not found'
+    else:
+        script, div = components(plot)
+
+        return render_template('plot.html', script = script, div = div, ticker = ticker) 
 
 
 

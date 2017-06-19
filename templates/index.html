@@ -23,17 +23,17 @@
   <h1>Stock plotter</h1>
   <div class=metanav>
     <h4>
-    Please enter a stock ticker eg. GOOG, and check desired features.
+    Please enter a stock ticker (eg. GOOG, AAPL, AMZN, FB ...), and check desired features.
     </h4>
     <form id='ticker_name' method='post' action='plot' > 
        <p>
        Ticker symbol <input type='text' name='ticker' />
        </p>
        <p>
-       Closing price  <input type='checkbox' name='closing_price' value='true' /> <br />
-       Adjusted closing price  <input type='checkbox' name='adj_closing_price' value='true' /> <br />
-       Opening price  <input type='checkbox' name='opening_price' value='true' /> <br />
-       Adjusted opening price  <input type='checkbox' name='adj_opening_price' value='true' /> <br />
+       Closing price  <input type='checkbox' name='price' value='Close' checked='true'/> <br />
+       Adjusted closing price  <input type='checkbox' name='price' value='Adj. Close' /> <br />
+       Opening price  <input type='checkbox' name='price' value='Open' /> <br />
+       Adjusted opening price  <input type='checkbox' name='price' value='Adj. Open' /> <br />
        </p>
       <!--  <p>
        Age: <input type='text' name='age_lulu' />

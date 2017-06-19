@@ -1,11 +1,32 @@
-<!doctype html>
-<title>Stock plotter</title>
-<link rel=stylesheet type=text/css href='{{ url_for('static',filename='style.css')}}'>
+<title>Your Stock</title>
 <div class=page>
-	<h1>Stock plotter</h1>
-	<div class=metanav>
-		<h4>
-		Here is the plot of {{ticker}}
-		</h4>
-	</div>
-</div>
+    <head> 
+        <link href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.css" rel="stylesheet" type="text/css">
+        <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.css" rel="stylesheet" type="text/css">
+
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js"></script>
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
+    </head>
+
+    
+    <body>
+
+    <h1>
+      Time series of the last 90 days of closing prices for {{ ticker }}
+
+    </h1>
+    <h1>
+    <a href="/index">Back</a>
+    </h1>
+
+    <form id='input' method='post' action='plot' >
+      Want another stock? Please input the ticker code: 
+      <input type='text' name='ticker' /> 
+      <input type='submit' value='Submit' />
+    </form>
+      {{script|safe}}
+      {{div|safe}}
+
+    </body>
+
+  </div>
